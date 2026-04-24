@@ -19,9 +19,8 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
-        
         //inicializar graficador pasando el arbol
-        graficador = new DibujoArbol(miArbol);
+        graficador = new DibujoArbol(arbol);
         //ajustar tamaño al panel
         graficador.setSize(pnlContenedor.getSize());
         //agregar al panel
@@ -463,7 +462,7 @@ public class Menu extends javax.swing.JFrame {
     //logica 
     
     //gestor de logica
-    Logica.ArbolABB miArbol = new Logica.ArbolABB();
+    Logica.ArbolABB arbol = new Logica.ArbolABB();
     
     //gestor para dibujar el arbol
     Logica.DibujoArbol graficador;
@@ -472,7 +471,7 @@ public class Menu extends javax.swing.JFrame {
     //insertar cartas
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         try {
-            // Validaciones de campos obligatorios [cite: 171, 172]
+            // Validaciones de campos obligatorios 
             if (txtId.getText().trim().isEmpty() || txtDescripcion.getText().trim().isEmpty()) {
                 throw new Exception("Todos los campos (Id, Descripción y Categoría) son obligatorios.");
             }
@@ -481,10 +480,10 @@ public class Menu extends javax.swing.JFrame {
             String descripcion = txtDescripcion.getText().trim();
             String categoria = cmbCategoria.getSelectedItem().toString();
 
-            // Llamada a la lógica (esta ya valida ID positivo y duplicados) [cite: 173, 174]
-            miArbol.insertar(new Entidades.Tarjeta(id, descripcion, categoria));
+            // Llamada a la lógica (valida ID positivo y duplicados)
+            arbol.insertar(new Entidades.Tarjeta(id, descripcion, categoria));
 
-            // Limpiar campos tras éxito (No se usan cuadros de diálogo para éxito) [cite: 50, 168]
+            // Limpiar campos  
             txtId.setText("");
             txtDescripcion.setText("");
             System.out.println("Insertado correctamente"); 
@@ -493,7 +492,6 @@ public class Menu extends javax.swing.JFrame {
             actualizarGrafico();
 
         } catch (NumberFormatException e) {
-            // Los cuadros de diálogo solo se permiten para errores o excepciones [cite: 49, 170]
             javax.swing.JOptionPane.showMessageDialog(this, "El ID debe ser un número entero positivo.");
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, e.getMessage());
@@ -506,7 +504,7 @@ public class Menu extends javax.swing.JFrame {
             txtErrores.setText(""); // Limpiar mensajes previos
             int id = Integer.parseInt(txtIdBorrar.getText().trim());
 
-            miArbol.eliminar(id);
+            arbol.eliminar(id);
             txtIdBorrar.setText("");
             //actualizar arbol
             actualizarGrafico();
@@ -523,14 +521,14 @@ public class Menu extends javax.swing.JFrame {
     private void btnBorrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrar1ActionPerformed
         try {
             int id = Integer.parseInt(txtIdBuscar.getText().trim());
-            Entidades.Tarjeta encontrada = miArbol.buscar(id);
+            Entidades.Tarjeta encontrada = arbol.buscar(id);
 
             if (encontrada != null) {
                 lblResultadoId.setText("ID: " + encontrada.getId());
                 lblResultadoDesc.setText("Desc: " + encontrada.getDescripcion());
                 lblResultadoCat.setText("Cat: " + encontrada.getCategoria());
             } else {
-                // Informar en la interfaz si no existe [cite: 132]
+                // Informar en la interfaz si no existe 
                 lblResultadoId.setText("El elemento no fue encontrado.");
                 lblResultadoDesc.setText("");
                 lblResultadoCat.setText("");
@@ -542,28 +540,28 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnPreOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreOrdenActionPerformed
         // Muestra IDs separados por guiones sin cuadros de diálogo 
-        txtAreaConsola.setText("Recorrido Pre-Orden:\n" + miArbol.preOrden());
+        txtAreaConsola.setText("Recorrido Pre-Orden:\n" + arbol.preOrden());
     }//GEN-LAST:event_btnPreOrdenActionPerformed
 
     private void btnInOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInOrdenActionPerformed
         // Muestra IDs separados por guiones sin cuadros de diálogo
-        txtAreaConsola.setText("Recorrido In-Orden:\n" + miArbol.inOrden());
+        txtAreaConsola.setText("Recorrido In-Orden:\n" + arbol.inOrden());
     }//GEN-LAST:event_btnInOrdenActionPerformed
 
     private void btnPostOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostOrdenActionPerformed
         // Muestra IDs separados por guiones sin cuadros de diálogo
-        txtAreaConsola.setText("Recorrido Post-Orden:\n" + miArbol.postOrden());
+        txtAreaConsola.setText("Recorrido Post-Orden:\n" + arbol.postOrden());
     }//GEN-LAST:event_btnPostOrdenActionPerformed
 
     private void btnContarEspecialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContarEspecialesActionPerformed
         // Calcula total de "Súper héroes" o "Súper villanos"
-        int total = miArbol.contarHeroesVillanos();
+        int total = arbol.contarHeroesVillanos();
         txtAreaConsola.setText("Cantidad de Súper héroes o Súper villanos: " + total);
     }//GEN-LAST:event_btnContarEspecialesActionPerformed
 
     private void btnListarFrasesHojasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarFrasesHojasActionPerformed
         // Lista descripciones de categoría "Frases icónicas" que sean hojas 
-        String lista = miArbol.listarFrasesIconicasHojas();
+        String lista = arbol.listarFrasesIconicasHojas();
         if (lista.isEmpty()) {
             txtAreaConsola.setText("No se encontraron frases icónicas en nodos hoja.");
         } else {
@@ -573,27 +571,26 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnConsultasAdicionalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasAdicionalesActionPerformed
         try {
-        // Esta opción consolida los puntos (a), (b) y (c) del enunciado [cite: 153, 154, 155]
+        // consultas extra
         StringBuilder sb = new StringBuilder();
         sb.append("=== CONSULTAS ADICIONALES DEL ÁRBOL ===\n\n");
         
-        // (a) Total Súper héroes/villanos [cite: 153]
-        sb.append("a) Total Súper héroes o Súper villanos: ").append(miArbol.contarHeroesVillanos()).append("\n\n");
+        // (a) Total Súper héroes/villanos 
+        sb.append("a) Total Súper héroes o Súper villanos: ").append(arbol.contarHeroesVillanos()).append("\n\n");
         
-        // (b) Lista de Frases icónicas en hojas [cite: 154]
+        // (b) Lista de Frases icónicas en hojas
         sb.append("b) Frases icónicas en nodos hoja:\n");
-        String frases = miArbol.listarFrasesIconicasHojas();
+        String frases = arbol.listarFrasesIconicasHojas();
         sb.append(frases.isEmpty() ? "Ninguna encontrada.\n" : frases).append("\n");
         
-        // (c) Mayor y Menor Id [cite: 155, 156]
-        // Se obtienen mediante recorrido del árbol [cite: 158]
+        // (c) Mayor y Menor Id 
+        // Se obtienen mediante recorrido del árbol 
         sb.append("c) Rango de IDs en el sistema:\n");
-        sb.append("   - ID Menor: ").append(miArbol.obtenerMenor()).append("\n");
-        sb.append("   - ID Mayor: ").append(miArbol.obtenerMayor()).append("\n");
+        sb.append("   - ID Menor: ").append(arbol.obtenerMenor()).append("\n");
+        sb.append("   - ID Mayor: ").append(arbol.obtenerMayor()).append("\n");
         
         txtAreaConsola.setText(sb.toString());
         } catch (Exception e) {
-            // Solo se permiten cuadros emergentes para excepciones [cite: 49, 170]
             txtAreaConsola.setText("Error al procesar consultas: " + e.getMessage());
         }
     }//GEN-LAST:event_btnConsultasAdicionalesActionPerformed
